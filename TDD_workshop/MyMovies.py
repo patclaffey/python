@@ -1,15 +1,36 @@
 import re
 
 class Movies(object):
-
+    '''
+    Purpose: TDD Workshop Lab
+    Input:   List of Movies with Years
+    Output:  Report giving number of movies by decade
+    '''
 
     def __init__(self):
+        '''
+        Purpose: Initialize object
+        Input:   self
+        Output:  Movies object
+        '''
         pass
 
 
     def find_year_in_line(self, line):
-        
-        pat = re.compile('\S+\s+\S*(\d{4})[\s).]*$' )
+        '''
+        Purpose: Get calendar year from text string
+        Input:   String with film name and year information
+        Output:  Four digit calendar year
+        '''    
+
+        pat = re.compile(r'''
+            \S+     # One or more non-space character, movie name
+            \s+     # One or more white space after movie name
+            \S*     # Zero or more non-spaces before year
+            (\d{4}) # calendar year
+            [\s).]* # space or punctuation after year
+            $       # END OF LINE
+            ''', re.VERBOSE )
 
         if pat.search(line):
             year = pat.search(line).group(1)
@@ -20,19 +41,35 @@ class Movies(object):
 
     
     def find_film_in_line(self, line):
+        '''
+        Purpose: Get film name from text string
+        Input:   String with film name and year information
+        Output:  String representing film name
+        '''
         
-        pat = re.compile('[\s]+[\s(]*\d{4}[\s).]*$' )
+        pat = re.compile(r'''
+            [\s]+   # One or more white space after movie name
+            [\s(]*  # some punctuation char / space before year
+            \d{4}   # calendar year
+            [\s).]* # space / punctuation after year
+            $       # END OF LINE
+            ''' , re.VERBOSE )
         
-        mysplit = pat.split( line )
-        film_name = mysplit[0]
+        split_line = pat.split( line )
+        film_name = split_line[0]
 
         if not re.search('\S+', film_name):
-            film_name = None
+            film_name = None  # re.split fails to match or no film name
         
         return film_name
 
     
     def find_decade(self, year_in):
+        '''
+        Purpose:  Get decade for a given year
+        Input:    Calander year between 1960 and 2009
+        Output:   String representing decade
+        '''
         
         if year_in == None:
             year = 0
@@ -57,6 +94,12 @@ class Movies(object):
 
 
     def get_decade_totals(self, data_in):
+        '''
+        Purpose:  Find number of movies per decade
+        Input:    String with film name and year information
+        Output:   Dictionary, decade as key, film qty as value 
+        '''
+        
         hold_results =      {'1960s':0,
                             '1970s':0,
                             '1980s':0,
@@ -72,6 +115,12 @@ class Movies(object):
 
 
     def print_decade_totals(self, data_in):
+        '''
+        Purpose:  Print listing of number of movies per decade
+        Input:    Dictionary with number of movies per decade
+        Output:   List of number of moview per decade
+        '''
+        
         print("")
         for k,v in sorted(data_in.items()):
             print (k + ': ' + str(v)  )

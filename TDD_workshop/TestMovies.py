@@ -31,7 +31,7 @@ class TestMovies(unittest.TestCase):
         for line, expected in test_harness:
             film = MyMovies.Movies()
             result = film.find_year_in_line(line)
-            self.assertEqual(expected,result, msg='Year error  ' + line )
+            self.assertEqual(expected,result, msg='Year error  ' + repr(line) )
 
     def test_find_movie_in_line(self):
 
@@ -53,7 +53,7 @@ class TestMovies(unittest.TestCase):
         for line, expected in test_harness:
             film = MyMovies.Movies()
             result = film.find_film_in_line(line)
-            self.assertEqual(expected,result, msg='Movie error  ' + line )
+            self.assertEqual(expected,result, msg='Movie error  ' + repr(line) )
 
 
     def test_find_decade(self):
