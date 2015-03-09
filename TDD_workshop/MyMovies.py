@@ -100,16 +100,13 @@ class Movies(object):
         Output:   Dictionary, decade as key, film qty as value 
         '''
         
-        hold_results =      {'1960s':0,
-                            '1970s':0,
-                            '1980s':0,
-                            '1990s':0,
-                            '2000s':0}
+        hold_results = {}
+        
         for line in data_in:
             year = self.find_year_in_line(line)
             decade = self.find_decade(year)
             if decade != None:
-                hold_results[ decade] = hold_results[ decade] + 1
+                hold_results[ decade] = hold_results.setdefault(decade, 0) + 1
                 
         return hold_results
 
@@ -122,29 +119,35 @@ class Movies(object):
         '''
         
         print("")
-        for k,v in sorted(data_in.items()):
-            print (k + ': ' + str(v)  )
+        
+        # calling sorted to create a list of keys, order by dict value
+        sort_by_values =  sorted(data_in, key=data_in.__getitem__, reverse=True)
+        
+        #printing dict ordered by value, highest values first
+        for i in sort_by_values:
+            print (i + ': ' + str(data_in[i])  )
         
         return True
 
 
 if __name__ == '__main__':
-    movie_data = (
-                'Jaws (1975)',
-                'Starwars 1977)', 
-                '2001 A Space Odyssey ( 1968 )', 
-                'Back to the future 1985.',
-                'Raiders of the lost ark 1981 .',
-                'jurassic park 1993',
-                'The Matrix 1999', 
-                'A fist full of Dollars', 
-                '10,000 BC (2008)',
-                '1941 (1979)', 
-                '24 Hour Party People (2002)',
-                '300 (2007)', 
-                '2010'
-                )
+    movie_data = '''
+                Jaws (1975)
+                Starwars 1977) 
+                2001 A Space Odyssey ( 1968 ) 
+                Back to the future 1985.
+                Raiders of the lost ark 1981 .
+                jurassic park 1993
+                The Matrix 1999
+                A fist full of Dollars
+                10,000 BC (2008)
+                1941 (1979)
+                24 Hour Party People (2002)
+                300 (2007)
+                2010
+                '''
+    movie_list = movie_data.splitlines()
     film = Movies()
-    result = film.get_decade_totals(movie_data)
+    result = film.get_decade_totals(movie_list)
     print_output = film.print_decade_totals(result)
 
